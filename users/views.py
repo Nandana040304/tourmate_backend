@@ -104,3 +104,24 @@ def profile_view(request):
     serializer = ProfileSerializer(request.user)
     return Response(serializer.data)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout_view(request):
+    """
+    Logout endpoint - invalidates user token
+    The frontend should delete the stored token after calling this endpoint
+    """
+    try:
+        # With JWT, tokens are stateless so there's nothing to invalidate on backend
+        # The frontend handles token deletion from local storage
+        return Response(
+            {"message": "Logged out successfully"},
+            status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response(
+            {"error": f"Logout failed: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+

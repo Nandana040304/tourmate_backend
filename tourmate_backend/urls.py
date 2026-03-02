@@ -15,24 +15,38 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from users.views import reset_password_page
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.urls import path, include
-
-
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from datetime import timedelta
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('api/', include('users.urls')),
-    path('reset-password/<str:token>/', reset_password_page, name='reset_password_page'),
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+
     path('api/', include('places.urls')),
     path('api/sos/', include('sos.urls')),
+
+    # ✅ ONLY THIS FOR PHOTO DIARY
+    path('api/photodiary/', include('photodiary.urls')),
+
+    path('reset-password/<str:token>/', reset_password_page, name='reset_password_page'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/', include('weather.urls')),
+    path('api/translator/', include('translator.urls')),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
