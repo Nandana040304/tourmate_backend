@@ -107,23 +107,6 @@ http://127.0.0.1:8000/
 
 ---
 
-## 📱 Frontend
-
-Open the Flutter project.
-
-Install packages
-
-```bash
-flutter pub get
-```
-
-Run
-
-```bash
-flutter run
-```
-
----
 
 ## 👨‍💻 Team Members
 
